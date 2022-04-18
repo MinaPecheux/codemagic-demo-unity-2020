@@ -4,9 +4,11 @@ definitions:
     # Add the group environment variables in Codemagic UI (either in Application/Team variables) - https://docs.codemagic.io/variables/environment-variable-groups/
       - unity # <-- (Includes UNITY_VERSION, UNITY_SERIAL, UNITY_USERNAME and UNITY_PASSWORD)
     vars:
-      UNITY_BIN: /Applications/Unity/Hub/Editor/2020.3.31f1/Unity.app/Contents/MacOS/Unity
+      UNITY_VERSION: 2020.3.31f1
+      UNITY_VERSION_CHANGESET: 6b54b7616050
+      UNITY_BIN: /Applications/Unity/Hub/Editor/${UNITY_VERSION}/Unity.app/Contents/MacOS/Unity
 workflows:
-  mac-mini-unity-2020:
+  mac-pro-unity-2020:
     name: Mac Unity 2020
     max_build_duration: 120
     environment:
@@ -32,12 +34,10 @@ workflows:
     environment:
       <<: *env_unity
     scripts:
-        - name: Install Unity 2020
+        - name: Install Unity
           script: | 
-            curl -o ./unity.pkg https://download.unity3d.com/download_unity/6b54b7616050/MacEditorInstaller/Unity.pkg
-            sudo -S installer -package ./unity.pkg -target / -verbose
-            curl -o ./unity-mac.pkg https://download.unity3d.com/download_unity/6b54b7616050/MacEditorTargetInstaller/UnitySetup-Mac-Mono-Support-for-Editor-2020.3.31f1.pkg
-            sudo -S installer -package ./unity-mac.pkg -target / -verbose
+            /Applications/Unity\ Hub.app/Contents/MacOS/Unity\ Hub -- --headless install --version ${UNITY_VERSION} --changeset ${UNITY_VERSION_CHANGESET} 
+            /Applications/Unity\ Hub.app/Contents/MacOS/Unity\ Hub -- --headless install-modules --version ${UNITY_VERSION} -m mac-mono
         - *activate_unity_license
         - *build_app
     artifacts:
