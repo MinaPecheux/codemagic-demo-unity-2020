@@ -32,6 +32,12 @@ workflows:
     environment:
       <<: *env_unity
     scripts:
+        - name: Install Unity 2020
+          script: | 
+            curl -o ./unity.pkg https://download.unity3d.com/download_unity/6b54b7616050/MacEditorInstaller/Unity.pkg
+            sudo -S installer -package ./unity.pkg -target / -verbose
+            curl -o ./unity-mac.pkg https://download.unity3d.com/download_unity/6b54b7616050/MacEditorTargetInstaller/UnitySetup-Mac-Mono-Support-for-Editor-2020.3.31f1.pkg
+            sudo -S installer -package ./unity-mac.pkg -target / -verbose
         - *activate_unity_license
         - *build_app
     artifacts:
