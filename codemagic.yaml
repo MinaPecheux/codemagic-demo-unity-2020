@@ -37,6 +37,7 @@ workflows:
         - name: Install Unity
           script: | 
             /Applications/Unity\ Hub.app/Contents/MacOS/Unity\ Hub -- --headless install --version ${UNITY_VERSION} --changeset ${UNITY_VERSION_CHANGESET} 
+          ignore_failure: true
         - *activate_unity_license
         - *build_app
     artifacts:
